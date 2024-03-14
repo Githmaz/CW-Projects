@@ -33,6 +33,9 @@ public class PlaneManagement {
                     case 5:
                         print_tickets_info();
                         break;
+                    case 6:
+                        search_ticket();
+                        break;
                     default:
                         System.out.println("\n\""+option+"\" : Invalid Option, Try again!");
                 }
@@ -43,6 +46,37 @@ public class PlaneManagement {
         }
     }
 
+    private static void search_ticket() {
+        DesignElements.title_Design("Search ticket");
+        while (true) {
+            try {
+                // Get user's row selection
+                System.out.print("\nEnter the Row (A,B,C,D) : ");
+                char row = scanner.next().charAt(0);
+                int rowNumber = row - 'A';
+                // Get user's seat number selection
+                System.out.printf("Enter the seat number (1 to %d) : ", seats[rowNumber].length);
+                int seatNumber = scanner.nextInt();
+                // Check the seat Sold or not
+                for (int i=0; i<tickets.length;i++) {
+                    if (tickets[i].getSeat().equals(row+""+seatNumber)) {
+                        tickets[i].print_ticket_info();
+                        break;
+                    }
+                    if (i == tickets.length - 1){
+                        DesignElements.title_Design("This seat is available");
+                    }
+                }
+                //invalid Input handler
+            } catch (Exception e) {
+                System.out.println("\nInvalid Row or Seat number");
+            }
+            // Ask user try again or not
+            System.out.print("\nEnter 'Y' to Cancel a seat again , or Any-Other key to go to menu : ");
+            char option = scanner.next().charAt(0);
+            if (option != 'y' && option != 'Y') return;
+        }
+    }
 
 
     // --------- Buy Seat Method ---------- //
@@ -113,14 +147,14 @@ public class PlaneManagement {
                     System.out.println("\nThe Seat is available now , Thank you");
                     seats[rowNumber][seatNumber-1] = 0;
                 } else System.out.println("\nSorry, Seat is not Sold");
-                // Ask user try again or not
-                System.out.print("\nEnter 'Y' to Cancel a seat again , or Any-Other key to go to menu : ");
-                char option = scanner.next().charAt(0);
-                if (option != 'y' && option != 'Y') return;
                 //invalid Input handler
             } catch (Exception e) {
                 System.out.println("\nInvalid Row or Seat number");
             }
+            // Ask user try again or not
+            System.out.print("\nEnter 'Y' to Cancel a seat again , or Any-Other key to go to menu : ");
+            char option = scanner.next().charAt(0);
+            if (option != 'y' && option != 'Y') return;
         }
     }
 

@@ -23,11 +23,10 @@ public class DesignElements {
 
     // --------- title Design Method ---------- //
     public static void title_Design(String title){
-        System.out.println("\n\n+--------------------------------------------------+");
-        System.out.printf("*                   %-20s           *\n", title);
-        System.out.println("+--------------------------------------------------+");
+        System.out.println("\n\n+-------------------------------------------------------+");
+        System.out.printf("*                    %-22s             *\n", title);
+        System.out.println("+-------------------------------------------------------+");
     }
-
 
     public static void displayMenu() {
         title_Design("MENU OPTIONS");
@@ -35,6 +34,8 @@ public class DesignElements {
         System.out.println(" 2) Cancel a Seat");
         System.out.println(" 3) Find First Available Seat");
         System.out.println(" 4) Show Seating Plan");
+        System.out.println(" 5) Print Tickets Info");
+        System.out.println(" 6) Search Ticket");
         System.out.print("\nPlease Enter your option : ");
     }
 }
