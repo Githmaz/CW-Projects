@@ -4,7 +4,6 @@ public class Person {
     private String surname;
     private String email;
 
-    public Person(){}
 
     // Constructor with parameters for name, surname, and email
     public Person(String name, String surname, String email) {
@@ -38,8 +37,8 @@ public class Person {
     }
 
     public void print_Person_info(){
-        System.out.printf("*         Name    : %-19s            *\n",this.name);
-        System.out.printf("*         Surname : %-19s            *\n",this.surname);
-        System.out.printf("*         Email   : %-19s            *\n",this.email);
+        System.out.printf("*             Name    : %-20s            *\n",this.name);
+        System.out.printf("*             Surname : %-20s            *\n",this.surname);
+        System.out.printf("*             Email   : %-20s            *\n",this.email);
     }
 }

@@ -1,6 +1,7 @@
 package Design;
 public class DesignElements {
 
+    // --------- welcome msg display method ---------- //
     public static void display_welcome_message() {
         System.out.println("\n\n\t\t\t\t\t\t____    __    ____  _______  __        ______   ______   .___  ___.  _______      \n" +
                 "\t\t\t\t\t\t\\   \\  /  \\  /   / |   ____||  |      /      | /  __  \\  |   \\/   | |   ____|     \n" +
@@ -28,7 +29,8 @@ public class DesignElements {
         System.out.println("+-------------------------------------------------------+");
     }
 
-    public static void displayMenu() {
+    // --------- display menu method ---------- //
+    public static void display_menu() {
         title_Design("MENU OPTIONS");
         System.out.println("\n 1) Buy a Seat");
         System.out.println(" 2) Cancel a Seat");

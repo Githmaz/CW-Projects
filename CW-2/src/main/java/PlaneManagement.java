@@ -10,9 +10,11 @@ public class PlaneManagement {
     private static Ticket[] tickets = new Ticket[0];
     private static final Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
+        // Display welcome message
         DesignElements.display_welcome_message();
         while (true) {
-            DesignElements.displayMenu();
+            // Display menu
+            DesignElements.display_menu();
             try {
                 int option = scanner.nextInt();
                 switch (option) {
@@ -46,41 +48,10 @@ public class PlaneManagement {
         }
     }
 
-    private static void search_ticket() {
-        DesignElements.title_Design("Search ticket");
-        while (true) {
-            try {
-                // Get user's row selection
-                System.out.print("\nEnter the Row (A,B,C,D) : ");
-                char row = scanner.next().charAt(0);
-                int rowNumber = row - 'A';
-                // Get user's seat number selection
-                System.out.printf("Enter the seat number (1 to %d) : ", seats[rowNumber].length);
-                int seatNumber = scanner.nextInt();
-                // Check the seat Sold or not
-                for (int i=0; i<tickets.length;i++) {
-                    if (tickets[i].getSeat().equals(row+""+seatNumber)) {
-                        tickets[i].print_ticket_info();
-                        break;
-                    }
-                    if (i == tickets.length - 1){
-                        DesignElements.title_Design("This seat is available");
-                    }
-                }
-                //invalid Input handler
-            } catch (Exception e) {
-                System.out.println("\nInvalid Row or Seat number");
-            }
-            // Ask user try again or not
-            System.out.print("\nEnter 'Y' to Cancel a seat again , or Any-Other key to go to menu : ");
-            char option = scanner.next().charAt(0);
-            if (option != 'y' && option != 'Y') return;
-        }
-    }
-
 
     // --------- Buy Seat Method ---------- //
     public static void buy_seat(){
+        // Set title for Buy seats
         DesignElements.title_Design("Buy Seats");
         while (true) {
             try {
@@ -132,7 +103,11 @@ public class PlaneManagement {
     // --------- Cancel Seat Method ---------- //
     public static void cancel_seat(){
         DesignElements.title_Design("Cancel Seat");
-        while (true) {
+        // Check is any seat is sold or not
+        if (tickets.length == 0){
+            DesignElements.title_Design("\b\b\b\b\b\bAll the seats are available ");
+        }
+        while (tickets.length != 0) {
             try {
                 // Get user's row selection
                 System.out.print("\nEnter the Row (A,B,C,D) : ");
@@ -160,30 +135,37 @@ public class PlaneManagement {
 
     // --------- Find First Available Method ---------- //
     public static void find_first_available(){
+        // Set title for find first available
         DesignElements.title_Design("Find First Available");
+        // loop for find the first available seat
         outerLoop:
         for(int i = 0; i < seats.length; i++) {
             for(int j = 0; j < seats[i].length; j++) {
                 if (seats[i][j] == 0) {
                     System.out.printf("\nFirst Available Seat is : %c%d \n", (char)('A' + i), j+1);
-                    break outerLoop; // Will break the outer for loop
+                    break outerLoop;
                 }
             }
+            // If all seats are sold
             if (i == seats.length-1) System.out.println("\nAll the Seats are Sold");
         }
+        // Wait for user input to return to the menu
         System.out.print("\nPress Any-Key to go back to menu : ");
         scanner.next();
     }
 
     // --------- Show Seating Plan Method ---------- //
     public static void show_seating_plan(){
+        // Set title for show seating plan
         DesignElements.title_Design("Show Seating Plan");
+        // loop for print all the seats
         for (int[] row : seats) {
             for (int seat : row) {
                 System.out.print(seat == 0 ? " O " : " X ");
             }
             System.out.println();
         }
+        // Wait for user input to return to the menu
         System.out.print("\nPress Any-Key to go back to menu : ");
         scanner.next();
     }
@@ -191,42 +173,93 @@ public class PlaneManagement {
 
     // --------- Print Tickets Info Method ---------- //
     public static void print_tickets_info(){
+        // Loop to print ticket info and cal total
         int total = 0;
         for(Ticket ticket :tickets){
             ticket.print_ticket_info();
             total+=ticket.getPrice();
         }
-        DesignElements.title_Design("Total price is : "+total+"$");
+        // Print the Total value
+        DesignElements.title_Design("\b\bTotal price is : "+total+"$     ");
+        // Wait for user input to return to the menu
         System.out.print("\nPress Any-Key to go back to menu : ");
         scanner.next();
     }
-    // ----------- title Design Method ---------- //
-    public static int get_seat_value(int seatNumber){
-        if(seatNumber>9) return 200;
-        if(seatNumber>5) return 150;
-        return 100;
+
+    // --------- Search Ticket Method ---------- //
+    private static void search_ticket() {
+        // Set title for search ticket
+        DesignElements.title_Design("Search ticket");
+        // Check is any seat is sold or not
+        if (tickets.length == 0){
+            DesignElements.title_Design("\b\b\b\b\b\bAll the seats are available ");
+        }
+        while (tickets.length != 0) {
+            try {
+                // Get user's row selection
+                System.out.print("\nEnter the Row (A,B,C,D) : ");
+                char row = scanner.next().charAt(0);
+                int rowNumber = row - 'A';
+                // Get user's seat number selection
+                System.out.printf("Enter the seat number (1 to %d) : ", seats[rowNumber].length);
+                int seatNumber = scanner.nextInt();
+                // Check the seat Sold or not
+                for (int i=0; i<tickets.length;i++) {
+                    if (tickets[i].getSeat().equals(row+""+seatNumber)) {
+                        tickets[i].print_ticket_info();
+                        break;
+                    }
+                    if (i == tickets.length - 1){
+                        DesignElements.title_Design("\b\b\b\bThis seat is available    ");
+                    }
+                }
+                // Invalid Input handler
+            } catch (Exception e) {
+                System.out.println("\nInvalid Row or Seat number");
+            }
+            // Ask user try again or not
+            System.out.print("\nEnter 'Y' to Cancel a seat again , or Any-Other key to go to menu : ");
+            char option = scanner.next().charAt(0);
+            if (option != 'y' && option != 'Y') return;
+        }
     }
 
-    // --------- title Design Method ---------- //
+
+
+    // ----------- Get Seat Value Method ---------- //
+    public static int get_seat_value(int seatNumber){
+        if(seatNumber>9) return 180;
+        if(seatNumber>5) return 150;
+        return 200;
+    }
+
+    // --------- adding New ticket to array method  ---------- //
     public static void add_new_ticket(Ticket newTicket){
+        // Create a new array with space for the new ticket
         Ticket[]  updatedTickets = new Ticket[tickets.length+1];
+        // Copy existing tickets
         for(int i = 0; i<tickets.length ;i++){
             updatedTickets[i] = tickets[i];
         }
+        // add the new ticket and update the tickets reference
         updatedTickets[tickets.length] = newTicket;
         tickets = updatedTickets;
     }
 
-    // --------- title Design Method ---------- //
+    // --------- remove ticket from Array method ---------- //
     public static void remove_ticket(String seatNumber){
+        // Create a new array with one less slot
         Ticket[] updatedTickets = new Ticket[tickets.length - 1];
-        int updatedIndex = 0;
+        int updatedIndex = 0;// Index for the updated array
         for (Ticket ticket : tickets) {
+            // Skip the ticket to be removed
             if (ticket.getSeat().equals(seatNumber)) {
                 continue;
             }
+            // Copy other tickets to the updated array
             updatedTickets[updatedIndex++] = ticket;
         }
+        // Update the tickets reference
         tickets = updatedTickets;
     }
 }
