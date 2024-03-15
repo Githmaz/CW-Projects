@@ -64,27 +64,16 @@ public class PlaneManagement {
                 int seatNumber = scanner.nextInt();
                 // Check the seat Sold or not
                 if (seats[rowNumber][seatNumber-1] == 0) {
-                    // Get Personal Details
-                    System.out.print("\n*** Personal Details *** \n");
-                    System.out.print("Enter your First name    : ");
-                    // Person Name
-                    String name = scanner.next();
-                    System.out.print("Enter your Surname       : ");
-                    // Person Surname
-                    String surname = scanner.next();
-                    // Person Email
-                    String email;
-                    while (true){
-                        System.out.print("Enter your Email         : ");
-                        email = scanner.next();
-                        // Email Validation
-                        if (email.contains("@") && email.contains(".")) break;
-                        System.out.println("\nInvalid email! Please enter a valid email containing '@' and '.'\n");
-                    }
+                    //Getting Personal details
+                    Person person = get_personal_details();
                     // Booking the Seat
                     seats[rowNumber][seatNumber-1] = 1;
-                    add_new_ticket(new Ticket(row+""+seatNumber,get_seat_value(seatNumber),new Person(name,surname,email)));
-                    System.out.printf("\n%c%d Seat is sold to %s , Thank you",row,seatNumber,name+" "+surname);
+                    //add new ticket
+                    Ticket newTicket = new Ticket(row+""+seatNumber,get_seat_value(seatNumber),person);
+                    add_new_ticket(newTicket);
+                    // Save the ticket as txt file
+                    newTicket.save();
+                    System.out.printf("\n%c%d Seat is sold to %s , Thank you",row,seatNumber,person.getName()+" "+person.getSurname());
                 }else {
                     System.out.print("\nSorry, Seat is already Sold");
                 }
@@ -158,16 +147,19 @@ public class PlaneManagement {
     public static void show_seating_plan(){
         // Set title for show seating plan
         DesignElements.title_Design("Show Seating Plan");
+        System.out.println();
         // loop for print all the seats
         for (int[] row : seats) {
+            System.out.print("");
             for (int seat : row) {
-                System.out.print(seat == 0 ? " O " : " X ");
+                System.out.print(seat == 0 ? " O  " : " X  ");
             }
             System.out.println();
         }
         // Wait for user input to return to the menu
         System.out.print("\nPress Any-Key to go back to menu : ");
         scanner.next();
+
     }
 
 
@@ -231,6 +223,28 @@ public class PlaneManagement {
         if(seatNumber>9) return 180;
         if(seatNumber>5) return 150;
         return 200;
+    }
+
+    // ----------- Get Personal details ---------- //
+    public static Person get_personal_details() {
+        // Get Personal Details
+        System.out.print("\n*** Personal Details *** \n");
+        System.out.print("Enter your First name    : ");
+        // Person Name
+        String name = scanner.next();
+        System.out.print("Enter your Surname       : ");
+        // Person Surname
+        String surname = scanner.next();
+        // Person Email
+        String email;
+        while (true){
+            System.out.print("Enter your Email         : ");
+            email = scanner.next();
+            // Email Validation
+            if (email.contains("@") && email.contains(".")) break;
+            System.out.println("\nInvalid email! Please enter a valid email containing '@' and '.'\n");
+        }
+        return new Person(name, surname, email);
     }
 
     // --------- adding New ticket to array method  ---------- //

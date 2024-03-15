@@ -25,7 +25,7 @@ public class DesignElements {
     // --------- title Design Method ---------- //
     public static void title_Design(String title){
         System.out.println("\n\n+-------------------------------------------------------+");
-        System.out.printf("*                    %-22s             *\n", title);
+        System.out.printf("*                   %-24s            *\n", title);
         System.out.println("+-------------------------------------------------------+");
     }
 

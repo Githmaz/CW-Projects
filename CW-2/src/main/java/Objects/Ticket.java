@@ -1,6 +1,10 @@
 package Objects;
 import Design.DesignElements;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Ticket {
     private String seat;
     private int price;
@@ -11,6 +15,10 @@ public class Ticket {
         this.seat = seat;
         this.price = price;
         this.person = person;
+    }
+
+    public Ticket() {
+
     }
 
     public String getSeat() {
@@ -44,5 +52,29 @@ public class Ticket {
         System.out.println("*\t      Person info                                   *");
         this.person.print_Person_info();
         System.out.println("+-------------------------------------------------------+");
+    }
+
+    public void save() {
+        try {
+            // Create a FileWriter object to write to the file
+            FileWriter fileWriter = new FileWriter("src/main/java/Tickets/" + this.seat + ".txt");
+
+            // Write the ticket information to the file
+            fileWriter.write("+-------------------------------------------------------+\n");
+            fileWriter.write("                    " + this.seat + " Seat Ticket\n");
+            fileWriter.write("+-------------------------------------------------------+\n");
+            fileWriter.write("\t      Seat number : " + this.seat + "\n");
+            fileWriter.write("\t      Price       : " + this.price + "$\n");
+            fileWriter.write("\t      Person info \n");
+            fileWriter.write("             Name    : " + this.person.getName() + "\n");
+            fileWriter.write("             Surname : " + this.person.getSurname() + "\n");
+            fileWriter.write("             Email   : " + this.person.getEmail() + "\n");
+            fileWriter.write("+-------------------------------------------------------+\n");
+
+            // Close the FileWriter to release resources
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println("Error saving ticket info");
+        }
     }
 }
