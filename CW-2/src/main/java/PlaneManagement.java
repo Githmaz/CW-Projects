@@ -61,7 +61,6 @@ public class PlaneManagement {
                 char rowLetter = seatPosition.charAt(0); // Get the Row letter
                 int rowNumber = rowLetter - 'A'; // Convert Row letter to Row Number
                 int seatNumber = Integer.parseInt(seatPosition.substring(1)); // Get the Seat Number
-
                 // Check seat sold or not
                 if (seats[rowNumber][seatNumber-1] == 0) {
                     // Getting Personal details
@@ -185,7 +184,7 @@ public class PlaneManagement {
                         break;
                     }
                     if (i == tickets.length - 1){
-                        DesignElements.title_Design("\b\b\b\bThis seat is available    ");
+                        System.out.println("\n\tNo ticket found for the selected seat.");
                     }
                 }
             }
@@ -201,10 +200,11 @@ public class PlaneManagement {
         try {
             // Get user's row selection
             System.out.print("\nEnter the Row (A,B,C,D) : ");
-            char row = Character.toUpperCase(scanner.next().charAt(0));
+            String rowInput = scanner.next().toUpperCase();
+            char row = rowInput.charAt(0);
             // Check if the input is A, B, C, D
-            if (row < 'A' || row > 'D') {
-                System.out.println("\nInvalid input! Please enter valid Row Letter ( A,B,C,D) ");
+            if (rowInput.length() != 1 || row < 'A' || row > 'D') {
+                System.out.println("\nInvalid input! Please enter valid Row Letter ( A,B,C,D ) ");
                 return null;
             }
             // Get user's seat number selection
