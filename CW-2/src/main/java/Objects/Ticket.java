@@ -18,7 +18,6 @@ public class Ticket {
     }
 
     public Ticket() {
-
     }
 
     public String getSeat() {

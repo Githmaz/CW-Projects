@@ -9,6 +9,7 @@ public class PlaneManagement {
     private static final int[][] seats = {new int[14], new int[12], new int[12], new int[14]};
     private static Ticket[] tickets = new Ticket[0];
     private static final Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         // Display welcome message
         DesignElements.display_welcome_message();
@@ -50,70 +51,59 @@ public class PlaneManagement {
 
 
     // --------- Buy Seat Method ---------- //
-    public static void buy_seat(){
+    private static void buy_seat(){
         // Set title for Buy seats
         DesignElements.title_Design("Buy Seats");
         while (true) {
-            try {
-                // Get user's row selection
-                System.out.print("\nEnter the Row (A,B,C,D) : ");
-                char row = Character.toUpperCase(scanner.next().charAt(0));
-                int rowNumber = row - 'A' ;
-                // Get user's seat number selection
-                System.out.printf("Enter the seat number (1 to %d) : ", seats[rowNumber].length);
-                int seatNumber = scanner.nextInt();
-                // Check the seat Sold or not
+            // Get User Seat Position
+            String seatPosition = get_seat_number();
+            if(seatPosition != null) {
+                char rowLetter = seatPosition.charAt(0); // Get the Row letter
+                int rowNumber = rowLetter - 'A'; // Convert Row letter to Row Number
+                int seatNumber = Integer.parseInt(seatPosition.substring(1)); // Get the Seat Number
+
+                // Check seat sold or not
                 if (seats[rowNumber][seatNumber-1] == 0) {
-                    //Getting Personal details
+                    // Getting Personal details
                     Person person = get_personal_details();
                     // Booking the Seat
                     seats[rowNumber][seatNumber-1] = 1;
-                    //add new ticket
-                    Ticket newTicket = new Ticket(row+""+seatNumber,get_seat_value(seatNumber),person);
+                    // Create , Add and Save ticket
+                    Ticket newTicket = new Ticket(rowLetter+""+seatNumber,get_seat_value(seatNumber),person);
                     add_new_ticket(newTicket);
-                    // Save the ticket as txt file
                     newTicket.save();
-                    System.out.printf("\n%c%d Seat is sold to %s , Thank you",row,seatNumber,person.getName()+" "+person.getSurname());
+                    // Display
+                    System.out.printf("\n%c%d Seat is sold to %s , Thank you\n",rowLetter,seatNumber,person.getName()+" "+person.getSurname());
                 }else {
-                    System.out.print("\nSorry, Seat is already Sold");
+                    System.out.println("\nSorry, Seat is already Sold");
                 }
-                // Invalid Input handler
-            }catch (Exception e){
-                System.out.println("\nInvalid Row or Seat number");
             }
             // Ask user try again or not
-            System.out.print("\n\nEnter 'Y' to buy a seat again , or Any-Other key to go to menu : ");
+            System.out.print("\nEnter 'Y' to buy a seat again , or Any-Other key to go to menu : ");
             char option = scanner.next().charAt(0);
             if (option != 'y' && option != 'Y') return;
-
         }
     }
 
     // --------- Cancel Seat Method ---------- //
-    public static void cancel_seat(){
+    private static void cancel_seat(){
         DesignElements.title_Design("Cancel Seat");
         // Check is any seat is sold or not
-        if (tickets.length == 0){
-            DesignElements.title_Design("\b\b\b\b\b\bAll the seats are available ");
-        }
+        if (tickets.length == 0)DesignElements.title_Design("\b\b\b\b\b\bAll the seats are available ");
+
         while (tickets.length != 0) {
-            try {
-                // Get user's row selection
-                System.out.print("\nEnter the Row (A,B,C,D) : ");
-                char row = scanner.next().charAt(0);
-                int rowNumber = row - 'A';
-                // Get user's seat number selection
-                System.out.printf("Enter the seat number (1 to %d) : ", seats[rowNumber].length);
-                int seatNumber = scanner.nextInt();
+            // Get User Seat Position
+            String seatPosition = get_seat_number();
+            if(seatPosition != null) {
+                char rowLetter = seatPosition.charAt(0); // Get the Row letter
+                int rowNumber = rowLetter - 'A'; // Convert Row letter to Row Number
+                int seatNumber = Integer.parseInt(seatPosition.substring(1)); // Get the Seat Number
                 // Check the seat Sold or not
-                if (seats[rowNumber][seatNumber-1] == 1) {
-                    remove_ticket(row+""+seatNumber);
+                if (seats[rowNumber][seatNumber - 1] == 1) {
+                    remove_ticket(rowLetter + "" + seatNumber);
                     System.out.println("\nThe Seat is available now , Thank you");
-                    seats[rowNumber][seatNumber-1] = 0;
+                    seats[rowNumber][seatNumber - 1] = 0;
                 } else System.out.println("\nSorry, Seat is not Sold");
-                //invalid Input handler
-            } catch (Exception e) {
-                System.out.println("\nInvalid Row or Seat number");
             }
             // Ask user try again or not
             System.out.print("\nEnter 'Y' to Cancel a seat again , or Any-Other key to go to menu : ");
@@ -159,9 +149,7 @@ public class PlaneManagement {
         // Wait for user input to return to the menu
         System.out.print("\nPress Any-Key to go back to menu : ");
         scanner.next();
-
     }
-
 
     // --------- Print Tickets Info Method ---------- //
     public static void print_tickets_info(){
@@ -183,21 +171,16 @@ public class PlaneManagement {
         // Set title for search ticket
         DesignElements.title_Design("Search ticket");
         // Check is any seat is sold or not
-        if (tickets.length == 0){
-            DesignElements.title_Design("\b\b\b\b\b\bAll the seats are available ");
-        }
+        if (tickets.length == 0) System.out.println("\n\t\tAll the seats are available\n");
         while (tickets.length != 0) {
-            try {
-                // Get user's row selection
-                System.out.print("\nEnter the Row (A,B,C,D) : ");
-                char row = scanner.next().charAt(0);
-                int rowNumber = row - 'A';
-                // Get user's seat number selection
-                System.out.printf("Enter the seat number (1 to %d) : ", seats[rowNumber].length);
-                int seatNumber = scanner.nextInt();
+            // Get User Seat Position
+            String seatPosition = get_seat_number();
+            if(seatPosition != null) {
+                char rowLetter = seatPosition.charAt(0);
+                int seatNumber = Integer.parseInt(seatPosition.substring(1));
                 // Check the seat Sold or not
                 for (int i=0; i<tickets.length;i++) {
-                    if (tickets[i].getSeat().equals(row+""+seatNumber)) {
+                    if (tickets[i].getSeat().equals(rowLetter+""+seatNumber)) {
                         tickets[i].print_ticket_info();
                         break;
                     }
@@ -205,9 +188,6 @@ public class PlaneManagement {
                         DesignElements.title_Design("\b\b\b\bThis seat is available    ");
                     }
                 }
-                // Invalid Input handler
-            } catch (Exception e) {
-                System.out.println("\nInvalid Row or Seat number");
             }
             // Ask user try again or not
             System.out.print("\nEnter 'Y' to Cancel a seat again , or Any-Other key to go to menu : ");
@@ -216,16 +196,41 @@ public class PlaneManagement {
         }
     }
 
+    // Get Seat number
+    public static String get_seat_number(){
+        try {
+            // Get user's row selection
+            System.out.print("\nEnter the Row (A,B,C,D) : ");
+            char row = Character.toUpperCase(scanner.next().charAt(0));
+            // Check if the input is A, B, C, D
+            if (row < 'A' || row > 'D') {
+                System.out.println("\nInvalid input! Please enter valid Row Letter ( A,B,C,D) ");
+                return null;
+            }
+            // Get user's seat number selection
+            int rowNumber = row - 'A';
+            System.out.printf("Enter the seat number (1 to %d) : ", seats[rowNumber].length);
+            int seatNumber = scanner.nextInt();
+            if (seatNumber < 0 || seatNumber > seats[rowNumber].length) {
+                System.out.println("\nIn Row " + row + " Seat number need to be in 1 to " + seats[rowNumber].length);
+                return null;
+            }
+            return row+""+seatNumber;
+        }catch (Exception e){
+            System.out.println("\nInvalid input. Please enter a number for the seat number.");
+            scanner.nextLine();
+            return null;
+        }
+    }
 
-
-    // ----------- Get Seat Value Method ---------- //
+    // Get Seat Value Method
     public static int get_seat_value(int seatNumber){
         if(seatNumber>9) return 180;
         if(seatNumber>5) return 150;
         return 200;
     }
 
-    // ----------- Get Personal details ---------- //
+    // Get Personal details
     public static Person get_personal_details() {
         // Get Personal Details
         System.out.print("\n*** Personal Details *** \n");
@@ -247,7 +252,7 @@ public class PlaneManagement {
         return new Person(name, surname, email);
     }
 
-    // --------- adding New ticket to array method  ---------- //
+    // adding New ticket to array method
     public static void add_new_ticket(Ticket newTicket){
         // Create a new array with space for the new ticket
         Ticket[]  updatedTickets = new Ticket[tickets.length+1];
@@ -260,7 +265,7 @@ public class PlaneManagement {
         tickets = updatedTickets;
     }
 
-    // --------- remove ticket from Array method ---------- //
+    // remove ticket from Array method
     public static void remove_ticket(String seatNumber){
         // Create a new array with one less slot
         Ticket[] updatedTickets = new Ticket[tickets.length - 1];
@@ -277,5 +282,7 @@ public class PlaneManagement {
         tickets = updatedTickets;
     }
 }
+
+
 
 
