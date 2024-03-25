@@ -70,10 +70,25 @@ public class Ticket {
             fileWriter.write("             Email   : " + this.person.getEmail() + "\n");
             fileWriter.write("+-------------------------------------------------------+\n");
 
-            // Close the FileWriter to release resources
+            // Close the FileWriter
             fileWriter.close();
         } catch (Exception e) {
             System.out.println("Error saving ticket info");
+        }
+    }
+
+    public void delete() {
+        try {
+            // Create a File object for the ticket file
+            File file = new File("src/main/java/Tickets/" + this.seat + ".txt");
+            // Attempt to delete the file
+            if (file.delete()) {
+                System.out.println("\n\tTicket deleted successfully");
+            } else {
+                System.out.println("Failed to delete the ticket");
+            }
+        } catch (Exception e) {
+            System.out.println("Error deleting ticket");
         }
     }
 }

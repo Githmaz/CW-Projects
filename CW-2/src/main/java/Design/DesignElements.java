@@ -38,6 +38,7 @@ public class DesignElements {
         System.out.println(" 4) Show Seating Plan");
         System.out.println(" 5) Print Tickets Info");
         System.out.println(" 6) Search Ticket");
+        System.out.println(" 0) Quit");
         System.out.print("\nPlease Enter your option : ");
     }
 }
